@@ -18,6 +18,6 @@ total_amount = []
 #average of the changes in "Profit/Losses" over the entire period
 average_change = []
 #greatest increase in profits (date and amount) over the entire period
-average_change = int(wrestler_data[2])
+average_change = int(budget_data[2])
 
 #greatest decrease in losses (date and amount) over the entire period
