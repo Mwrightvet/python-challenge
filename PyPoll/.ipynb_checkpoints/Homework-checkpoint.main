@@ -1,0 +1,156 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import csv\n",
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Election Results\n",
+      "----------------\n",
+      "Total Votes: 3521001\n",
+      "----------------\n",
+      "Khan: 63.0% (2218231)\n",
+      "Correy: 20.0% (704200)\n",
+      "Li: 14.0% (492940)\n",
+      "O'Tooley: 3.0% (105630)\n",
+      "-----------------\n",
+      "Winner: Khan\n",
+      "------------------\n",
+      "Congratulations to Khan !\n"
+     ]
+    }
+   ],
+   "source": [
+    "total_votes = 0\n",
+    "candidate_name = []\n",
+    "total_vote_each = {}\n",
+    "winner = ''\n",
+    "winner_count = 0\n",
+    "percentage_votes = []\n",
+    "\n",
+    "csvpath = os.path.join('..', 'Pypoll', 'election_data.csv')\n",
+    "\n",
+    "with open(csvpath, newline='') as csvfile:\n",
+    "    csvreader = csv.reader(csvfile, delimiter=',')\n",
+    "\n",
+    "    #Skip the header in analysis\n",
+    "    csv_header = next(csvreader)\n",
+    "\n",
+    "    for row in csvreader:\n",
+    "        #Find the total number of votes  \n",
+    "        total_votes += 1\n",
+    "        #Identify the candidates\n",
+    "        candidate = row[2]\n",
+    "        # Remember to isolate the candidates only when they match \n",
+    "        # It needs to keep track of the candidates as it's looping\n",
+    "        if candidate not in candidate_name:\n",
+    "        # Add to the list of candidates\n",
+    "            candidate_name.append(candidate)\n",
+    "            #add up the votes for each candidate\n",
+    "            total_vote_each[candidate] = 0\n",
+    "        #we need to keep track of the votes by candidate to know the total for each\n",
+    "        #this finds the total for each \n",
+    "        total_vote_each[candidate] += 1\n",
+    "\n",
+    "    for candidate in total_vote_each:\n",
+    "        votes = total_vote_each.get(candidate)\n",
+    "        percentage = (float(votes)/float(total_votes)) * 100\n",
+    "        percentage = round(percentage, 3)\n",
+    "        percentage_votes.append(percentage)\n",
+    "        \n",
+    "        #Identify the winner as the one with the highest count \n",
+    "        #Step 1: have it see which total votes are highest\n",
+    "        #Step 2: have it identify the winning candidate \n",
+    "        if (votes > winner_count):\n",
+    "            winner_count = votes\n",
+    "            winner = candidate\n",
+    "\n",
+    "    khan_percent = str(float(percentage_votes[0])) + \"% (\" + str((total_vote_each['Khan'])) + \")\"\n",
+    "    correy_percent = str(float(percentage_votes[1])) + \"% (\" + str((total_vote_each['Correy'])) + \")\"\n",
+    "    li_percent = str(float(percentage_votes[2])) + \"% (\" + str((total_vote_each['Li'])) + \")\"\n",
+    "    otooley_percent = str(float(percentage_votes[3])) + \"% (\" + str((total_vote_each[\"O'Tooley\"])) + \")\"\n",
+    "    \n",
+    "\n",
+    "    \n",
+    "    print(\"Election Results\")\n",
+    "    print(\"----------------\")\n",
+    "    print(\"Total Votes: \" + str(total_votes))\n",
+    "    print(\"----------------\")\n",
+    "    \n",
+    "    #Reference back to the previous calculations \n",
+    "    #Remember to test each and check the formatting \n",
+    "    print(\"Khan:\" , khan_percent)\n",
+    "    print(\"Correy:\" , correy_percent)\n",
+    "    print(\"Li:\" , li_percent)\n",
+    "    print(\"O'Tooley:\" , otooley_percent)\n",
+    "\n",
+    "    print(\"-----------------\")\n",
+    "    print(\"Winner: \" + winner)\n",
+    "    print(\"------------------\")\n",
+    "    print(\"Congratulations to\", winner,\"!\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "output_path = os.path.join(\"election.txt\")\n",
+    "with open(output_path, 'w', newline='') as txtfile:\n",
+    "    txtfile.write(f\"Total Votes: {total_votes}\")\n",
+    "    txtfile.write(f\"---------------------\")\n",
+    "    txtfile.write(f\"Khan: {khan_percent}\")\n",
+    "    txtfile.write(f\"Correy:{correy_percent}\")\n",
+    "    txtfile.write(f\"Li:{li_percent}\")\n",
+    "    txtfile.write(f\"O'Tooley:{otooley_percent}\")\n",
+    "    txtfile.write(f\"---------------------\")\n",
+    "    txtfile.write(f\"Winner: {winner}\")\n",
+    "    txtfile.write(f\"---------------------\")\n",
+    "    txtfile.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
